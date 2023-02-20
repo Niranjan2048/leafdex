@@ -35,11 +35,11 @@ INPUT_SIZE = 224
 NUM_CLASSES = 185
 USE_CUDA = torch.cuda.is_available()
 best_prec1 = 0
-saved_model = "saved_models\model_best_augment.pth.tar"
-testdir = 'dataset_all\leafsnap\dataset\test'
-pic_url="https://st2.depositphotos.com/1009329/5606/i/950/depositphotos_56067421-stock-photo-medicinal-red-tulsi-leaves.jpg"
+saved_model = "model_best.pth.tar"
+testdir = 'dataset_all/leafsnap/dataset/testit'
+pic_url="https://plantmaster.com/PlantMaster/FullSize/24943f.jpg?v=20180726-031701"
 
-def download_image(pic_url, image_loc = 'tulsi.jpg'):
+def download_image(pic_url, image_loc = 'dataset_all/leafsnap/dataset/testit/unknown/example.jpg'):
 
     with open(image_loc, 'wb') as handle:
         response = requests.get(pic_url, stream=True)
@@ -87,7 +87,7 @@ def test(test_loader, model, criterion, classes):
 #        label = classes[predicted.item()]
 #        confidence = int(confidence.item())
     
-        yhat = np.array(torch.nn.Softmax()(output.data))[0]
+        yhat = np.array(torch.nn.Softmax(dim=1)(output.data))[0]
         yhat[yhat<0.3] = 0.
         counts = len(yhat[yhat>0])
         if counts == 0:
@@ -140,7 +140,7 @@ def setup_model():
         print("=> no checkpoint found at '{}'".format(saved_model))
     
     #print('\n[INFO] Reading Training and Testing Dataset')
-    traindir = "dataset_all\leafsnap\dataset\test"
+    traindir = "dataset_all/leafsnap/dataset/train"
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                      std=[0.229, 0.224, 0.225])
     data_train = datasets.ImageFolder(traindir)
@@ -163,4 +163,4 @@ def main(pic_url):
     labels, confidences = test(test_loader, model, criterion, classes)
     return labels, confidences
 if __name__ == '__main__':
-    main(pic_url)
+    print(main(pic_url))

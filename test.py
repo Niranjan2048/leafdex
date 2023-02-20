@@ -119,7 +119,7 @@ if args.resume:
         print("=> no checkpoint found at '{}'".format(args.resume))
 
 #print('\n[INFO] Reading Training and Testing Dataset')
-traindir = os.path.join('C:/Users/CL-3/Desktop/leafnet/leafnet/dataset_all/leafsnap/dataset/train')
+traindir = os.path.join('dataset_all/leafsnap/dataset/train')
 print(args.testdata)
 testdir = args.testdata
 normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
